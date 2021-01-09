@@ -10,13 +10,14 @@ oso has only one feature, and that is to display audio
 waveforms in real time.
 
 I rather intentionally chose to use a software framebuffer
-for rendering, so It should be pretty easy to add new
+for rendering, so it should be pretty easy to add new
 features such as anti-aliasing, labels, etc. and interop
 with cairo.
 
 Currently, oso uses SDL for rendering the framebuffer, but
 it should be trivial to port it to other backends such as
-curses and linux fbdev.
+curses and linux fbdev because we are using a software 
+framebuffer.
 
 Usage
 =====
