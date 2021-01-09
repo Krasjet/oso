@@ -1,0 +1,13 @@
+/* gui.h: gui component of oso, can be replaced with other backends */
+#ifndef OSO_GUI_H
+#define OSO_GUI_H 
+
+#include "oso.h"
+
+void gui_init(oso_t *o, int width, int height, int scale);
+void gui_finish(oso_t *o);
+/* returns 1 on quit event, 0 otherwise */
+int gui_handle_events(oso_t *o);
+void gui_redraw(const oso_t *o);
+
+#endif
