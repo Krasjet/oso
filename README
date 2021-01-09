@@ -20,7 +20,7 @@ curses and linux fbdev because we are using a software
 framebuffer.
 
 Usage
-=====
+-----
 
 Before running oso, make sure your JACK server is running
 using `jackd` or `qjackctl`. Then run
