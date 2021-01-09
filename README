@@ -50,6 +50,8 @@ You can use `-` and `=` key to change the time scaling of
 the oscilloscope and and `[` and `]` key to change the
 amplitude scaling.
 
+See `oso(1)` for details.
+
 Build
 -----
 
