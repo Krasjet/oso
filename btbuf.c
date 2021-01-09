@@ -1,6 +1,7 @@
 /* btbuf.c: a tiny monochrome framebuffer library */
-#include "btbuf.h"
 #include <stdlib.h>
+
+#include "btbuf.h"
 
 #define draw(x, y) \
   buf->buf[(y)*buf->width + (x)] = BT_BLACK
@@ -67,7 +68,6 @@ btbuf_vline(btbuf *buf, int x, int y0, int y1)
   for (y = y0; y <= y1; ++y)
     draw(x, y);
 }
-
 
 void 
 btbuf_rline(btbuf *buf, int x0, int y0, int y1)

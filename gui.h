@@ -2,7 +2,7 @@
 #ifndef OSO_GUI_H
 #define OSO_GUI_H 
 
-#include "oso.h"
+struct oso_t;
 
 void gui_init(oso_t *o, int width, int height, int scale);
 void gui_finish(oso_t *o);

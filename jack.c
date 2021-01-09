@@ -1,8 +1,9 @@
 /* jack.c: interop with jack */
+#include <stdlib.h>
+
 #include "jack.h"
 #include "util.h"
 #include "oso.h"
-#include <stdlib.h>
 
 static int
 on_process(jack_nframes_t nframes, void *arg)

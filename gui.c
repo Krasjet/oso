@@ -1,8 +1,9 @@
 /* gui.c: gui component of oso, can be replaced with other backends */
+#include <stdio.h>
+
 #include "oso.h"
 #include "util.h"
 #include "btbuf.h"
-#include <stdio.h>
 
 void 
 handle_keypress(oso_t *o, int key)

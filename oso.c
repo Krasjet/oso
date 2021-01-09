@@ -1,12 +1,13 @@
 /* oso.h: entrypoint of oso */
+#include <stdio.h>
+#include <getopt.h>
+#include <signal.h>
+
 #include "oso.h"
 #include "jack.h"
 #include "gui.h"
 #include "btbuf.h"
 #include "util.h"
-#include <stdio.h>
-#include <getopt.h>
-#include <signal.h>
 
 static volatile int should_exit = 0;
 
