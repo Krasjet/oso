@@ -1,0 +1,156 @@
+.TH OSO 1
+.SH NAME
+oso \-
+A tiny oscilloscope for
+.SM JACK
+.
+.SH SYNOPSIS
+.B oso
+.RB [ \-h ]
+.RB [ \-W
+.IR width ]
+.RB [ \-H
+.IR height ]
+.RB [ \-S
+.IR scale ]
+.
+.SH DESCRIPTION
+.B oso
+is a tiny oscilloscope for
+.SM JACK
+Audio Connection Kit.
+The only feature it has is to display audio waveforms in real time.
+.
+.PP
+To use
+.BR oso ,
+first start a
+.SM JACK
+server using
+.B jackd(1)
+or
+.BR qjackctl(1) .
+Then run
+.PP
+.in +4n
+.EX
+$ \fBoso\fP
+.EE
+.in
+.PP
+to start the oscilloscope.
+.
+Connect the
+.B in
+port of
+.B oso
+to other applications (for
+.BR qjackctl(1) ,
+use the
+.I Graph
+or
+.I Connect
+button):
+.PP
+.in +4n
+.EX
++-------+--------+       +-----+-----------+
+| synth |        |       | oso |           |
++-------+        |       +-----+           |
+|                |       |                 |
+|      audio_out +------>+ in              |
++----------------+       +-----------------+
+.EE
+.in
+.PP
+.
+You can use command-line arguments to set the window size
+and pixel scaling of
+.BR oso .
+For example,
+.PP
+.in +4n
+.EX
+$ \fBoso\fP -W512 -H401 -S1
+.EE
+.in
+.PP
+sets the width to
+.B 512
+pixels, height to
+.B 401
+pixels, and scaling to
+.BR 1 .
+.
+.SH KEYBINDINGS
+You can control the display of oscilloscope using keyboard. Make sure the
+.B oso
+window is focused when you press the keys.
+.TP
+.B SPACE
+Pause the display or resume if already paused.
+.TP
+.B 0
+Toggle drawing mode between 
+.B line 
+mode or 
+.B dot 
+mode.
+.IP
+In
+.B line
+mode, the sharp jumps in, for example, a square wave will be connected by a
+straight line, whereas in
+.B dot
+mode, raw samples will be drawn so the waveform will be discontinuous.
+.IP
+The default is 
+.B line
+mode.
+.TP
+.B -
+Time-scale zoom in.
+It halves samples per pixel.
+.TP
+.B +
+Time-scale zoom out.
+It doubles samples per pixel.
+.TP
+.B [
+Amplitude zoom in.
+It decreases maximum amplitude by 
+.BR 0.1 .
+The minimum is 
+.BR 0.1 .
+.TP
+.B ]
+Amplitude zoom out.
+It increases maximum amplitude by 
+.BR 0.1 .
+The maximum is 
+.BR 1.5 .
+.
+.SH OPTIONS
+.TP
+.B \-h
+Print usage and exit.
+.TP
+.BI \-W " width"
+Set the width of oscilloscope in pixels.
+Note that there is a limit to how thin or wide a window can be, so do not set
+this to something too extreme.
+The default is 
+.B 256
+pixels.
+.TP
+.BI \-H " height"
+Set the height of oscilloscope in pixels.
+Again, do not set this to something too extreme.
+The default is 
+.B 159
+pixels.
+.TP
+.BI \-S " scale"
+Set pixel scaling.
+The default is 
+.BR 2 .
