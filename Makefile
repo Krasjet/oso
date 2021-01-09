@@ -21,7 +21,7 @@ btbuf.o: btbuf.h
 	$(CC) $(CFLAGS) -c $<
 
 clean:
-	rm -f oso *.o
+	rm -f oso *.o *.exe
 
 install: oso oso.1
 	install -d $(DESTDIR)$(PREFIX)/bin
