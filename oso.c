@@ -29,8 +29,8 @@ reset_cursor(oso_t *o)
 {
   o->cursor = 0;
   o->sp_left = o->spp;
-  o->maxbuf[0] = -1.f;
-  o->minbuf[0] =  1.f;
+  o->maxbuf[0] = -o->amp_max;
+  o->minbuf[0] =  o->amp_max;
 }
 
 static void 
@@ -97,8 +97,8 @@ process_samples(oso_t *o)
     if (o->sp_left == 0) {
       /* proceed to next pixel */
       o->cursor = (o->cursor + 1) % width;
-      o->minbuf[o->cursor] =  1.f;
-      o->maxbuf[o->cursor] = -1.f;
+      o->maxbuf[o->cursor] = -o->amp_max;
+      o->minbuf[o->cursor] =  o->amp_max;
       o->sp_left = o->spp;
     }
 
