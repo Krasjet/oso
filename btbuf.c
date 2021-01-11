@@ -51,7 +51,7 @@ btbuf_clear(btbuf *buf)
     buf->buf[i] = BT_WHITE;
 }
 
-void 
+void
 btbuf_vline(btbuf *buf, int x, int y0, int y1)
 {
   int y;
@@ -69,7 +69,7 @@ btbuf_vline(btbuf *buf, int x, int y0, int y1)
     draw(x, y);
 }
 
-void 
+void
 btbuf_rline(btbuf *buf, int x0, int y0, int y1)
 {
   int mid, sy, cnt;

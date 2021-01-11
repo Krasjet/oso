@@ -23,7 +23,7 @@ void btbuf_clear(btbuf *buf);
 /* draw vertical line from (x,y0) to (x,y1)
  * ASSUMES: 0<=x<width */
 void btbuf_vline(btbuf *buf, int x, int y0, int y1);
-/* draw line from (x,y0) to (x+1,y1) 
+/* draw line from (x,y0) to (x+1,y1)
  * ASSUMES: 0<=x<width-1 */
 void btbuf_rline(btbuf *buf, int x, int y0, int y1);
 
