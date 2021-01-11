@@ -5,16 +5,19 @@
 #include "util.h"
 #include "oso.h"
 
+static jack_client_t *client;
+static jack_port_t *port_in;
+
 static int
 on_process(jack_nframes_t nframes, void *arg)
 {
   const sample_t *in;
-  oso_t *o = (oso_t *)arg;
+  jack_ringbuffer_t *rb = arg;
 
-  in = jack_port_get_buffer(o->port_in, nframes);
+  in = jack_port_get_buffer(port_in, nframes);
   /* copy samples to ringbuffer.
    * write might fail when buffer is full, but we don't care */
-  jack_ringbuffer_write(o->rb, (const char *)in, nframes*sizeof(sample_t));
+  jack_ringbuffer_write(rb, (const char *)in, nframes*sizeof(sample_t));
   return 0;
 }
 
@@ -29,20 +32,15 @@ on_shutdown(void *arg)
 void
 jack_init(oso_t *o)
 {
-  o->client = jack_client_open("oso", JackNoStartServer, NULL);
-  if (!o->client)
+  client = jack_client_open("oso", JackNoStartServer, NULL);
+  if (!client)
     die("fail to open jack client");
 
-  /* set up callbacks */
-  jack_on_shutdown(o->client, on_shutdown, NULL);
-  if (jack_set_process_callback(o->client, on_process, o))
-    die("fail to set up jack process callback");
-
   /* register input port */
-  o->port_in = jack_port_register(o->client, "in",
-                                  JACK_DEFAULT_AUDIO_TYPE,
-                                  JackPortIsInput, 0);
-  if (!o->port_in)
+  port_in = jack_port_register(client, "in",
+                               JACK_DEFAULT_AUDIO_TYPE,
+                               JackPortIsInput, 0);
+  if (!port_in)
     die("fail to register jack input port");
 
   /* we will use a ringbuffer to pass samples from audio thread to gui */
@@ -52,18 +50,20 @@ jack_init(oso_t *o)
   if (jack_ringbuffer_mlock(o->rb))
     die("fail to lock memory");
 
-  if (jack_activate(o->client))
+  /* set up callbacks */
+  jack_on_shutdown(client, on_shutdown, NULL);
+  if (jack_set_process_callback(client, on_process, o->rb))
+    die("fail to set up jack process callback");
+
+  if (jack_activate(client))
     die("fail to activate jack client");
 }
 
 void
 jack_finish(oso_t *o)
 {
-  if (!o)
-    return;
-
-  jack_deactivate(o->client);
-  jack_client_close(o->client);
+  jack_deactivate(client);
+  jack_client_close(client);
 
   jack_ringbuffer_free(o->rb);
 }

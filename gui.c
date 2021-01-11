@@ -1,11 +1,17 @@
 /* gui.c: gui component of oso, can be replaced with other backends */
 #include <stdio.h>
+#include <SDL2/SDL.h>
 
 #include "oso.h"
 #include "util.h"
 #include "btbuf.h"
 
-void 
+static SDL_Window *win;
+static SDL_Renderer *renderer;
+static SDL_Texture *texture;
+static Uint32 framedelay;
+
+void
 handle_keypress(oso_t *o, int key)
 {
   switch (key) {
@@ -38,7 +44,7 @@ handle_keypress(oso_t *o, int key)
 }
 
 void
-gui_init(oso_t *o, int width, int height, int scale)
+gui_init(int width, int height, int scale, int fps)
 {
   int rc;
 
@@ -47,16 +53,18 @@ gui_init(oso_t *o, int width, int height, int scale)
     die("fail to init sdl");
 
   rc = SDL_CreateWindowAndRenderer(width*scale, height*scale, 0,
-                                   &o->win, &o->renderer);
+                                   &win, &renderer);
   if (rc != 0)
     die("fail to create window");
-  SDL_SetWindowTitle(o->win, "oso");
+  SDL_SetWindowTitle(win, "oso");
 
-  o->texture = SDL_CreateTexture(o->renderer, SDL_PIXELFORMAT_BGRA32,
-                                 SDL_TEXTUREACCESS_STREAMING,
-                                 width, height);
-  if (!o->texture)
+  texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_BGRA32,
+                              SDL_TEXTUREACCESS_STREAMING,
+                              width, height);
+  if (!texture)
     die("fail to create texture");
+
+  framedelay = 1000/fps;
 }
 
 int
@@ -76,17 +84,17 @@ gui_handle_events(oso_t *o) {
 }
 
 void
-gui_finish(oso_t *o)
+gui_finish(void)
 {
-  SDL_DestroyTexture(o->texture);
-  SDL_DestroyRenderer(o->renderer);
-  SDL_DestroyWindow(o->win);
+  SDL_DestroyTexture(texture);
+  SDL_DestroyRenderer(renderer);
+  SDL_DestroyWindow(win);
   SDL_Quit();
 }
 
 void
-gui_redraw(const oso_t *o) {
-  struct bt_pixel *fb;
+gui_redraw(struct btbuf *fb) {
+  bt_pixel *texbuf;
   int pitch;
   static Uint32 ntick = 0;
 
@@ -94,13 +102,13 @@ gui_redraw(const oso_t *o) {
   Uint32 tick = SDL_GetTicks();
   if (tick < ntick)
     SDL_Delay(ntick - tick);
-  ntick = SDL_GetTicks() + o->framedelay;
+  ntick = SDL_GetTicks() + framedelay;
 
   /* copy fb to texture */
-  SDL_LockTexture(o->texture, NULL, (void **)&fb, &pitch);
-  memcpy(fb, o->fb->buf, o->fb->size);
-  SDL_UnlockTexture(o->texture);
+  SDL_LockTexture(texture, NULL, (void **)&texbuf, &pitch);
+  memcpy(texbuf, fb->buf, fb->size);
+  SDL_UnlockTexture(texture);
 
-  SDL_RenderCopy(o->renderer, o->texture, NULL, NULL);
-  SDL_RenderPresent(o->renderer);
+  SDL_RenderCopy(renderer, texture, NULL, NULL);
+  SDL_RenderPresent(renderer);
 }

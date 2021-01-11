@@ -4,7 +4,6 @@
 
 #include <jack/jack.h>
 #include <jack/ringbuffer.h>
-#include <SDL2/SDL.h>
 
 typedef jack_default_audio_sample_t sample_t;
 
@@ -16,16 +15,9 @@ enum {
 };
 
 typedef struct oso_t {
-  /* gui */
-  SDL_Window *win;
-  SDL_Renderer *renderer;
-  SDL_Texture *texture;
+  /* framebuffer for drawing */
   struct btbuf *fb;
-  Uint32 framedelay;
-
-  /* jack */
-  jack_client_t *client;
-  jack_port_t *port_in;
+  /* ringbuffer for sending audio data */
   jack_ringbuffer_t *rb;
 
   /* intermediate processing for rendering */

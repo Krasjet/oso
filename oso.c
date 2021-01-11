@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <signal.h>
+#include <stdlib.h>
 
 #include "oso.h"
 #include "jack.h"
@@ -18,7 +19,7 @@ on_signal(int signum)
   should_exit = 1;
 }
 
-static int 
+static int
 done(oso_t *o)
 {
   return gui_handle_events(o) || should_exit;
@@ -33,7 +34,7 @@ reset_cursor(oso_t *o)
   o->minbuf[0] =  o->amp_max;
 }
 
-static void 
+static void
 oso_init(oso_t *o, int width, int height, int scale)
 {
   o->fb = btbuf_new(width, height);
@@ -45,10 +46,7 @@ oso_init(oso_t *o, int width, int height, int scale)
   if (!o->maxbuf || !o->minbuf)
     die("fail to init max/min buffer");
 
-  gui_init(o, width, height, scale);
-  /* 60 fps */
-  o->framedelay = 1000/60;
-
+  gui_init(width, height, scale, 60);
   jack_init(o);
 
   /* default parameters */
@@ -59,11 +57,11 @@ oso_init(oso_t *o, int width, int height, int scale)
   reset_cursor(o);
 }
 
-static void 
+static void
 oso_finish(oso_t *o)
 {
   jack_finish(o);
-  gui_finish(o);
+  gui_finish();
 }
 
 static void
@@ -204,7 +202,7 @@ main(int argc, char *argv[])
     process_samples(&o);
     if (!o.paused)
       render_fb(&o);
-    gui_redraw(&o);
+    gui_redraw(o.fb);
   }
 
   oso_finish(&o);

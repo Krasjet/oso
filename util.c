@@ -1,7 +1,9 @@
 /* util.c: common utilities */
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef _WIN32
 #include <SDL2/SDL.h>
+#endif
 
 void
 die(const char *msg)
