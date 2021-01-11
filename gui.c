@@ -11,7 +11,7 @@ static SDL_Renderer *renderer;
 static SDL_Texture *texture;
 static Uint32 framedelay;
 
-void
+static void
 handle_keypress(oso_t *o, int key)
 {
   switch (key) {
