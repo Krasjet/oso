@@ -16,8 +16,10 @@ with cairo.
 
 Currently, oso uses SDL for rendering the framebuffer, but
 it should be trivial to port it to other backends such as
-curses and linux fbdev because we are using a software 
-framebuffer.
+curses and linux fbdev, because we are using a software
+framebuffer (though it might not be necessary since SDL
+pretty much runs on everything. You can even run oso without
+Xorg via SDL's kms/drm backend).
 
 Usage
 -----
@@ -28,10 +30,10 @@ using `jackd` or `qjackctl`. Then run
     $ oso
 
 on the command-line to open oso. A white window should pop
-up. 
+up.
 
-You need to connect the input of oso to the audio output 
-of another application (for qjackctl, use the `Graph` or 
+You need to connect the input of oso to the audio output
+of another application (for qjackctl, use the `Graph` or
 `Connect` button)
 
     +-------+--------+       +-----+-----------+
@@ -66,7 +68,7 @@ and for Debian-based distros, use
 
 If you are on Windows, use MinGW.
 
-Then use 
+Then use
 
     $ ./configure
     $ make
