@@ -5,7 +5,7 @@
 
 /* (0,0) = lower left corner */
 #define draw(x, y) \
-  buf->buf[(buf->height-y)*buf->width + (x)] = BT_BLACK
+  buf->buf[(buf->height-1-(y))*buf->width + (x)] = BT_BLACK
 
 /* clamp val to [a,b] */
 #define clamp(val, a, b) \
