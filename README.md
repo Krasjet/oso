@@ -82,3 +82,4 @@ Planned feature
 ---------------
 
 - resampling for < 1 samples per pixel rendering
+- trigger support
