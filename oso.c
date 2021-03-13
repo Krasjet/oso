@@ -46,7 +46,7 @@ oso_init(oso_t *o, int width, int height, int scale)
   if (!o->maxbuf || !o->minbuf)
     die("fail to init max/min buffer");
 
-  gui_init(width, height, scale, 60);
+  gui_init(width, height, scale, FPS);
   jack_init(o);
 
   /* default parameters */
@@ -77,12 +77,21 @@ process_samples(oso_t *o)
   if (avail <= 0)
     return;
 
-  /* if we get too much samples, only take from the end */
   if (avail >= max_size) {
+    /* if we get too many samples, only take from the end */
     jack_ringbuffer_read_advance(o->rb, avail - max_size);
     avail = max_size;
-    /* reset cursor to prevent a split in the middle of screen */
+    /* reset cursor to prevent a split in the middle
+     * of screen */
     reset_cursor(o);
+  } else if (o->spp*width/o->sr < 4.0/FPS) {
+    /* disable scrolling for low spp (mainly for 4<spp<8).
+     * this might cause some delay, but for low spp,
+     * it's barely noticeable. */
+
+    /* in this case, only update screen when buffer is full
+     * to prevent splitting */
+    return;
   }
 
   size = jack_ringbuffer_read(o->rb, (char*)buf, avail);

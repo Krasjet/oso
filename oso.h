@@ -11,7 +11,8 @@ enum {
   DEF_HEIGHT = 159,
   DEF_WIDTH  = 256,
   DEF_SCALE  = 2,
-  RB_SIZE = 1<<16 /* must be powers of 2 */
+  FPS        = 60,
+  RB_SIZE    = 1<<16 /* must be powers of 2 */
 };
 
 typedef struct oso_t {
@@ -19,6 +20,9 @@ typedef struct oso_t {
   struct btbuf *fb;
   /* ringbuffer for sending audio data */
   jack_ringbuffer_t *rb;
+
+  /* audio parameters */
+  float sr;
 
   /* intermediate processing for rendering */
   sample_t *minbuf;

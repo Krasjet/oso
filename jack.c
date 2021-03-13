@@ -21,6 +21,14 @@ on_process(jack_nframes_t nframes, void *arg)
   return 0;
 }
 
+static int
+on_sr_change(jack_nframes_t sr_new, void *arg)
+{
+  oso_t *o = arg;
+  o->sr = sr_new;
+  return 0;
+}
+
 /* die when jack server shuts down */
 static void
 on_shutdown(void *arg)
@@ -42,6 +50,11 @@ jack_init(oso_t *o)
                                JackPortIsInput, 0);
   if (!port_in)
     die("fail to register jack input port");
+
+  /* sample rate handling */
+  o->sr = jack_get_sample_rate(client);
+  if (jack_set_sample_rate_callback(client, on_sr_change, o))
+    die("fail to set up sample rate callback");
 
   /* we will use a ringbuffer to pass samples from audio thread to gui */
   o->rb = jack_ringbuffer_create(sizeof(sample_t) * RB_SIZE);
