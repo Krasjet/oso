@@ -52,7 +52,8 @@ gui_init(int width, int height, int scale, int fps)
   if (rc != 0)
     die("fail to init sdl");
 
-  rc = SDL_CreateWindowAndRenderer(width*scale, height*scale, 0,
+  rc = SDL_CreateWindowAndRenderer(width*scale, height*scale,
+                                   SDL_WINDOW_ALLOW_HIGHDPI,
                                    &win, &renderer);
   if (rc != 0)
     die("fail to create window");
