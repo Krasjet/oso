@@ -55,19 +55,19 @@ btbuf_clear(btbuf *buf)
 void
 btbuf_vline(btbuf *buf, int x, int y0, int y1)
 {
-  int y;
+  int sy;
 
   clamp(y0, 0, buf->height-1);
   clamp(y1, 0, buf->height-1);
 
-  if (y0 > y1) {
-    int tmp = y0;
-    y0 = y1;
-    y1 = tmp;
-  }
+  sy = y0 < y1 ? 1 : -1;
 
-  for (y = y0; y <= y1; ++y)
-    draw(x, y);
+  while (1) {
+    draw(x, y0);
+    if (y0 == y1)
+      break;
+    y0 += sy;
+  }
 }
 
 void
