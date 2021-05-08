@@ -7,7 +7,7 @@
 #include "oso.h"
 #include "jack.h"
 #include "gui.h"
-#include "btbuf.h"
+#include "fb.h"
 #include "util.h"
 
 static volatile int should_exit = 0;
@@ -37,7 +37,7 @@ reset_cursor(oso_t *o)
 static void
 oso_init(oso_t *o, int width, int height, int scale)
 {
-  o->fb = btbuf_new(width, height);
+  o->fb = fb_new(width, height);
   if (!o->fb)
     die("fail to allocate framebuffer");
 
@@ -132,7 +132,7 @@ render_fb(oso_t *o)
   sample_t prevmax = 0, prevmin = 0;
   size_t w = o->fb->width, h = o->fb->height;
 
-  btbuf_clear(o->fb);
+  fb_clear(o->fb);
 
   for (x = 0; x < w; ++x)  {
     sample_t max = o->maxbuf[x];
@@ -145,13 +145,13 @@ render_fb(oso_t *o)
       int yprevmax = map(prevmax, -amp, amp, 0, h-1);
       int yprevmin = map(prevmin, -amp, amp, 0, h-1);
       if (prevmax < min)
-        btbuf_rline(o->fb, x-1, yprevmax, ymin);
+        fb_rline(o->fb, x-1, yprevmax, ymin);
       else if (prevmin > max)
-        btbuf_rline(o->fb, x-1, yprevmin, ymax);
+        fb_rline(o->fb, x-1, yprevmin, ymax);
     }
 
     /* connect min and max at current sample */
-    btbuf_vline(o->fb, x, ymin, ymax);
+    fb_vline(o->fb, x, ymin, ymax);
     prevmax = max;
     prevmin = min;
   }

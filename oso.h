@@ -17,7 +17,7 @@ enum {
 
 typedef struct oso_t {
   /* framebuffer for drawing */
-  struct btbuf *fb;
+  struct frmbuf *fb;
   /* ringbuffer for sending audio data */
   jack_ringbuffer_t *rb;
 

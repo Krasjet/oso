@@ -4,7 +4,7 @@
 
 #include "oso.h"
 #include "util.h"
-#include "btbuf.h"
+#include "fb.h"
 
 static SDL_Window *win;
 static SDL_Renderer *renderer;
@@ -94,8 +94,8 @@ gui_finish(void)
 }
 
 void
-gui_redraw(struct btbuf *fb) {
-  bt_pixel *texbuf;
+gui_redraw(struct frmbuf *fb) {
+  Pixel *texbuf;
   int pitch;
   static Uint32 ntick = 0;
 
