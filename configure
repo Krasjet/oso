@@ -1,38 +1,38 @@
 #!/bin/sh
 
 die() {
-  printf "error: %s\n" "$1"
-  exit 1
+	printf "error: %s\n" "$1"
+	exit 1
 }
 
 upcs() {
-  echo "$1" | tr 'a-z' 'A-Z'
+	echo "$1" | tr 'a-z' 'A-Z'
 }
 
 check_pc() {
-  printf "checking for pkg-config..."
-  if command -v pkg-config >/dev/null; then
-    echo yes
-  else
-    echo no
-    die "pkg-config not found"
-  fi
+	printf "checking for pkg-config..."
+	if command -v pkg-config >/dev/null; then
+		echo yes
+	else
+		echo no
+		die "pkg-config not found"
+	fi
 }
 
 check_pkg() {
-  name=$1
-  pkg=${2:-$1}
-  printf "checking for %s..." "$name"
-  if pkg-config "$pkg" 2>/dev/null; then
-    echo yes
-  else
-    echo no
-    die "${name} not found"
-  fi
-  cat <<EOF >> config.mk
-$(upcs "$name")_CFLAGS=$(pkg-config --cflags "$pkg")
-$(upcs "$name")_LDLIBS=$(pkg-config --libs "$pkg")
-EOF
+	name=$1
+	pkg=${2:-$1}
+	printf "checking for %s..." "$name"
+	if pkg-config "$pkg" 2>/dev/null; then
+		echo yes
+	else
+		echo no
+		die "${name} not found"
+	fi
+	cat <<-EOF >> config.mk
+		$(upcs "$name")_CFLAGS=$(pkg-config --cflags "$pkg")
+		$(upcs "$name")_LDLIBS=$(pkg-config --libs "$pkg")
+	EOF
 }
 
 check_pc
