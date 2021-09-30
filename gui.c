@@ -69,7 +69,8 @@ gui_init(int width, int height, int scale, int fps)
 }
 
 int
-gui_handle_events(oso_t *o) {
+gui_handle_events(oso_t *o)
+{
   SDL_Event event;
 
   while (SDL_PollEvent(&event)) {
@@ -94,7 +95,8 @@ gui_finish(void)
 }
 
 void
-gui_redraw(struct frmbuf *fb) {
+gui_redraw(struct frmbuf *fb)
+{
   Pixel *texbuf;
   int pitch;
   static Uint32 ntick = 0;
