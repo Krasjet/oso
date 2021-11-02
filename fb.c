@@ -47,10 +47,16 @@ fb_clear(frmbuf *fb)
     fb->buf[i] = WHITE;
 }
 
+#define clamp(x, min, max) \
+  ((x) < (min)) ? (min) : ((x) > (max)) ? (max) :(x)
+
 void
 fb_vline(frmbuf *fb, int x, int y0, int y1)
 {
   int sy = y0 < y1 ? 1 : -1;
+
+  y0 = clamp(y0, 0, fb->height);
+  y1 = clamp(y1, 0, fb->height);
 
   while (1) {
     draw(fb, x, y0);
@@ -68,6 +74,9 @@ fb_rline(frmbuf *fb, int x0, int y0, int y1)
 {
   int mid, sy, cnt;
   int x1 = x0 + 1;
+
+  y0 = clamp(y0, 0, fb->height);
+  y1 = clamp(y1, 0, fb->height);
 
   /* a special case of bresenham */
   mid = abs(y1 - y0)/2;

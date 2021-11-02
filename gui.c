@@ -29,16 +29,15 @@ handle_keypress(oso_t *o, int key)
   case SDLK_EQUALS:        /* time zoom out */
     o->spp *= 2;
     break;
-  /* XXX: does it make sense to use db scale here? */
   case SDLK_LEFTBRACKET:   /* amp zoom in */
-    o->amp_max -= 0.1;
-    if (o->amp_max < 0.1)
-      o->amp_max = 0.1;
+    o->amp_max -= 0.1f;
+    if (o->amp_max < 0.1f)
+      o->amp_max = 0.1f;
     break;
   case SDLK_RIGHTBRACKET:  /* amp zoom out */
-    o->amp_max += 0.1;
-    if (o->amp_max > 1.5)
-      o->amp_max = 1.5;
+    o->amp_max += 0.1f;
+    if (o->amp_max > 1.5f)
+      o->amp_max = 1.5f;
     break;
   }
 }

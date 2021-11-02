@@ -51,7 +51,7 @@ oso_init(oso_t *o, int width, int height, int scale)
 
   /* default parameters */
   o->spp = 8;
-  o->amp_max = 1.f;
+  o->amp_max = 1;
   o->line_mode = 1;
   o->paused = 0;
   reset_cursor(o);
@@ -84,7 +84,7 @@ process_samples(oso_t *o)
     /* reset cursor to prevent a split in the middle
      * of screen */
     reset_cursor(o);
-  } else if (o->spp*width/o->sr < 4.0/FPS) {
+  } else if (o->spp*width/o->sr < 4.f/FPS) {
     /* disable scrolling for low spp (mainly for 4<spp<8).
      * this might cause some delay, but for low spp,
      * it's barely noticeable. */
